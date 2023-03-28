@@ -1,40 +1,21 @@
 <template>
 <el-container>
     <!-- Header -->
-  <el-header>
-    <el-input v-model="input" placeholder="请输入内容"></el-input>
-    <el-button type="primary" round>搜索</el-button>
-  </el-header>
+  <MyHeader />
   <!-- List -->
-  <el-main>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      :show-header="false">
-      <el-table-column
-        prop="done"
-        width="50">
-        <el-checkbox v-model="tableData.done"></el-checkbox>
-      </el-table-column>
-      <el-table-column
-        prop="title">
-      </el-table-column>
-    </el-table>
-  </el-main>
+  <MyList />
   <!-- Footer -->
-  <el-footer>
-    <div class="foo">
-        <el-checkbox v-model="checkAll"></el-checkbox>
-        <span>已完成0/全部0</span>
-    </div>
-    <el-button type="danger">清除所有已完成</el-button>
-  </el-footer>
+  <MyFooter />
 </el-container>
 </template>
 
 <script>
+import MyHeader from '@/components/MyHeader'
+import MyList from '@/components/MyList'
+import MyFooter from '@/components/MyFooter'
 export default {
     name:'ETodoList.vue',
+    components:{MyHeader,MyList,MyFooter},
     data(){
         return{
             input:'',
