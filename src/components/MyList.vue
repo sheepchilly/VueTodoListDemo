@@ -10,7 +10,7 @@
         <el-checkbox v-model="tableData.done"></el-checkbox>
       </el-table-column>
       <el-table-column
-        prop="title">
+        prop="tableData.title">
       </el-table-column>
     </el-table>
   </el-main>
@@ -18,10 +18,16 @@
 
 <script>
 export default {
-    name:'MyList'
+    name:'MyList',
+    props:['tableData']
 }
 </script>
 
-<style>
-
+<style lang="less">
+.el-main {
+    width: 100%;
+    color: #333;
+    text-align: center;
+    padding: 3px;
+  }
 </style>

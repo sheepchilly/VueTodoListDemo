@@ -10,10 +10,34 @@
 
 <script>
 export default {
-    name:'MyFooter'
+    name:'MyFooter',
+    data(){
+      return{
+        checkAll:false
+      }
+    }
 }
 </script>
 
-<style>
-
+<style lang="less">
+.el-footer{
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+    width: 100%;
+    text-align: center;
+    padding: 0 3px;
+    .foo{
+        float: left;
+        margin-left: 10px;
+        span{
+            padding-right: 10px;
+        }
+    }
+    .el-button{
+        float: right;
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+}
 </style>
