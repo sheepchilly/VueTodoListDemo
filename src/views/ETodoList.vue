@@ -1,11 +1,11 @@
 <template>
 <div class="container">
     <!-- Header -->
-  <MyHeader />
+  <MyHeader :tableData="tableData" @addTableData="addTableData"/>
   <!-- List -->
   <MyList :tableData="tableData"/>
   <!-- Footer -->
-  <MyFooter />
+  <MyFooter :tableData="tableData"/>
 </div>
 </template>
 
@@ -19,11 +19,39 @@ export default {
     data(){
         return{
             tableData:[
-                {id:'001',title:'吃饭',done:true},
+                {id:'001',title:'吃饭',done:false},
                 {id:'002',title:'睡觉',done:true},
                 {id:'003',title:'打豆豆',done:false},
             ],
         }
+    },
+    methods:{
+        addTableData(val){
+            this.tableData.unshift(val)
+        },
+        //勾选框勾选
+        checkChange(row){
+            this.tableData.forEach(item=>{
+                if(item.id==row.id)
+                    item.done =!item.done;
+            })
+        },
+        checkedAll(checked){
+            console.log(checked)
+            this.tableData.forEach(item=>{
+                if(checked==true){
+                    item.done = true
+                }else{
+                    item.done = false
+                    // this.$set(this.tableData,'item.done',false)
+                }
+            })
+        }
+    },
+    mounted(){
+    //   localStorage.setItem('tableData',JSON.stringify(this.tableData))
+    this.$bus.$on('checkChange',this.checkChange)
+    this.$bus.$on('checkedAll',this.checkedAll)
     }
 }
 </script>

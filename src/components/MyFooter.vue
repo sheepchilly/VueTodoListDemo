@@ -1,8 +1,8 @@
 <template>
   <el-footer>
     <div class="foo">
-        <el-checkbox v-model="checkAll"></el-checkbox>
-        <span>已完成0/全部0</span>
+        <el-checkbox v-model="checkAll" :checked="checked" @change="ckAll"></el-checkbox>
+        <span>已完成{{ finishNum }}/全部{{ total }}</span>
     </div>
     <el-button type="danger">清除所有已完成</el-button>
   </el-footer>
@@ -11,9 +11,29 @@
 <script>
 export default {
     name:'MyFooter',
+    props:['tableData'],
     data(){
       return{
-        checkAll:false
+        checkAll:false,
+        checked:false
+      }
+    },
+    methods:{
+      ckAll(){
+        this.checked=!this.checked
+        console.log('@',this.checked)
+        this.$bus.$emit('checkedAll',this.checked)
+        this.$bus.$emit('selectionAllChange',this.checked)
+      }
+    },
+    computed:{
+      finishNum(){
+        return this.tableData.reduce((pre,todo)=>{
+          return pre+(todo.done==true?1:0)
+        },0)
+      },
+      total(){
+        return this.tableData.length
       }
     }
 }

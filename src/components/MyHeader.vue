@@ -1,17 +1,33 @@
 <template>
   <el-header>
-    <el-input v-model="input" placeholder="请输入内容"></el-input>
-    <el-button type="primary" round>搜索</el-button>
+    <el-input v-model="title" placeholder="请输入内容" @keydown.native.enter="changeList"></el-input>
+    <el-button type="primary" round @click="searchInput">搜索</el-button>
   </el-header>
 </template>
 
 <script>
+import {nanoid} from 'nanoid'
 export default {
     name:'MyHeader',
+    props:['tableData','addTableData'],
     data(){
         return{
-            input:''
+            title:''
         }
+    },
+    methods:{
+      //子给父传数据，往数组里添加数据
+      changeList(){
+        const tableObj = {id:nanoid(),title:this.title,done:false}
+        this.$emit('addTableData',tableObj)
+      },
+      //搜索按钮
+      searchInput(){
+        let newData = this.tableData.filter(item=>{
+          return item.title==this.title
+        })
+        console.log(newData)
+      }
     }
 }
 </script>
