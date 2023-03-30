@@ -1,10 +1,10 @@
 <template>
-  <el-footer>
+  <el-footer v-show="isFooter">
     <div class="foo">
-        <el-checkbox v-model="checkAll" :checked="checked" @change="ckAll"></el-checkbox>
+        <el-checkbox v-model="checkAll"  @change="ckAll"></el-checkbox>
         <span>已完成{{ finishNum }}/全部{{ total }}</span>
     </div>
-    <el-button type="danger">清除所有已完成</el-button>
+    <el-button type="danger" @click="deleteAllFinish">清除所有已完成</el-button>
   </el-footer>
 </template>
 
@@ -14,16 +14,19 @@ export default {
     props:['tableData'],
     data(){
       return{
-        checkAll:false,
-        checked:false
+        checked:false,
       }
     },
     methods:{
       ckAll(){
-        this.checked=!this.checked
-        console.log('@',this.checked)
+        // this.checked=!this.checked
         this.$bus.$emit('checkedAll',this.checked)
-        this.$bus.$emit('selectionAllChange',this.checked)
+        // this.$bus.$emit('selectionAllChange',this.checked)
+      },
+      //清除所有已完成
+      deleteAllFinish(){
+        //只是触发事件没有传值
+        this.$bus.$emit('deleteFinish')
       }
     },
     computed:{
@@ -34,8 +37,24 @@ export default {
       },
       total(){
         return this.tableData.length
+      },
+      checkAll:{
+        get(){
+          return this.total === this.finishNum && this.total!=0
+        },
+        set(val){
+          this.checked = val
+        }
+      },
+      isFooter:{
+        get(){
+          return this.total != 0
+        },
+        set(val){
+          this.isFooter = val
+        }
       }
-    }
+    },
 }
 </script>
 

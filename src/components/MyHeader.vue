@@ -18,8 +18,15 @@ export default {
     methods:{
       //子给父传数据，往数组里添加数据
       changeList(){
-        const tableObj = {id:nanoid(),title:this.title,done:false}
-        this.$emit('addTableData',tableObj)
+        if(this.title.trim()!=''){
+          const tableObj = {id:nanoid(),title:this.title,done:false}
+          this.$emit('addTableData',tableObj)
+          this.title=''
+        }else{
+          alert('输入不可以为空')
+          this.title=''
+        }
+        
       },
       //搜索按钮
       searchInput(){

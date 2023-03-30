@@ -18,11 +18,7 @@ export default {
     components:{MyHeader,MyList,MyFooter},
     data(){
         return{
-            tableData:[
-                {id:'001',title:'吃饭',done:false},
-                {id:'002',title:'睡觉',done:true},
-                {id:'003',title:'打豆豆',done:false},
-            ],
+            tableData:JSON.parse(localStorage.getItem('tableData')) || []
         }
     },
     methods:{
@@ -36,22 +32,40 @@ export default {
                     item.done =!item.done;
             })
         },
+        //全选按钮
         checkedAll(checked){
-            console.log(checked)
             this.tableData.forEach(item=>{
                 if(checked==true){
                     item.done = true
                 }else{
                     item.done = false
-                    // this.$set(this.tableData,'item.done',false)
                 }
             })
+        },
+        //删除按钮
+        deleteList(id){
+            this.tableData.splice(this.tableData.findIndex(list=>list.id==id),1)
+        },
+        //删除所有已完成
+        deleteFinish(){
+            //filter过滤
+            this.tableData = this.tableData.filter(item=>item.done===false)
         }
     },
     mounted(){
-    //   localStorage.setItem('tableData',JSON.stringify(this.tableData))
-    this.$bus.$on('checkChange',this.checkChange)
-    this.$bus.$on('checkedAll',this.checkedAll)
+        this.$bus.$on('checkChange',this.checkChange)
+        this.$bus.$on('checkedAll',this.checkedAll)
+        this.$bus.$on('deleteList',this.deleteList)
+        this.$bus.$on('deleteFinish',this.deleteFinish)
+    },
+    watch:{
+        tableData:{
+            deep:true,
+            immediate:true,
+            handler(value){
+                localStorage.setItem('tableData',JSON.stringify(value))
+            }
+        }
     }
 }
 </script>
